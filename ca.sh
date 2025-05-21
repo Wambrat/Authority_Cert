@@ -81,10 +81,6 @@ openssl ca -config /etc/ssl/ca_racine/openssl.cnf -extensions v3_intermediate_ca
 chmod 444 /etc/ssl/ca_intermediaire/certs/intermediate.cert.pem
 
 echo "[*] Création de la chaîne de certificats intermédiaire..."
-# Création de la chaîne de certificats
-cat /etc/ssl/ca_intermediaire/certs/intermediate.cert.pem /etc/ssl/ca_racine/certs/ca.cert.pem > \
-        /etc/ssl/ca_intermediaire/certs/ca-chain.cert.pem
-chmod 444 /etc/ssl/ca_intermediaire/certs/ca-chain.cert.pem
 
 ## Création de l'autorité de certification serveur
 echo "[*] Génération de la clé privée du serveur..."
@@ -106,8 +102,8 @@ openssl ca -config /etc/ssl/ca_intermediaire/openssl.cnf -extensions server_cert
 chmod 444 /etc/ssl/ca_serveur/certs/server.cert.pem
 
 echo "[*] Création de la chaîne complète de certificats pour le serveur..."
-cat /etc/ssl/ca_intermediaire/certs/intermediate.cert.pem /etc/ssl/ca_racine/certs/ca.cert.pem \
-        /etc/ssl/ca_serveur/certs/server.cert.pem > /etc/ssl/ca_intermediaire/certs/ca-chain.cert.pem
+cat  /etc/ssl/ca_serveur/certs/server.cert.pem /etc/ssl/ca_intermediaire/certs/intermediate.cert.pem \
+        /etc/ssl/ca_racine/certs/ca.cert.pem > /etc/ssl/ca_intermediaire/certs/ca-chain.cert.pem
 chmod 444 /etc/ssl/ca_intermediaire/certs/ca-chain.cert.pem
 
 echo "[*] Activation des modules SSL et rewrite pour Apache..."
